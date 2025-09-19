@@ -4,6 +4,7 @@ import { setupListeners } from '@reduxjs/toolkit/query'
 import { productApi } from './services/productApi'
 import { authApi } from './services/authApi'
 import { profileApi } from './services/profileApi'
+import { categoryApi } from './services/categoryApi'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     [productApi.reducerPath]: productApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
+    [categoryApi.reducerPath]: categoryApi.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -19,6 +21,7 @@ export const store = configureStore({
       productApi.middleware,
       authApi.middleware,
       profileApi.middleware,
+      categoryApi.middleware,
     ),
 })
 
