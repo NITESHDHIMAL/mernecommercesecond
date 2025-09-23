@@ -100,6 +100,7 @@ const Home = () => {
             onChange={(page) => setpage(page)}
             pageSize={limit}
             total={total}
+            showLessItems
           />
 
         </div>
