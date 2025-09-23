@@ -1,22 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Layout from '../components/Layout/Layout'
 import { useGetProductQuery } from '../services/productApi';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
 import { useGetCategoryQuery } from '../services/categoryApi';
+import Pagination from 'rc-pagination';
+import 'rc-pagination/assets/index.css'
+
 
 // ctrlf + shift + r => hard refresh 
 const Home = () => {
 
   const { id } = useParams()
-
   const { search } = useLocation();
   const nav = useNavigate()
 
+  const [page, setpage] = useState(1);
+  const limit = 10;
+
   console.log("search params", search)
 
+  const { data: product } = useGetProductQuery({page, limit});
   // const { data: product } = useGetProductQuery(search);
-  const { data: product } = useGetProductQuery(id);
+  // const { data: product } = useGetProductQuery(id);
+  const total = product?.total || 0;
 
   const { data: category } = useGetCategoryQuery()
 
@@ -55,7 +62,7 @@ const Home = () => {
           </select>
 
 
-          <select name="" id="" onChange={(e) => nav('/category/' + e.target.value )}>
+          <select name="" id="" onChange={(e) => nav('/category/' + e.target.value)}>
             <option value>Select Category</option>
             {category?.map((data) => (
               <option value={data?.slug}>{data?.name}</option>
@@ -63,8 +70,7 @@ const Home = () => {
           </select>
 
 
-          <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
-
+          <div className="mt-10 mb-12 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
             {product?.products?.map((products, i) => (
               <article key={i} className="relative flex flex-col overflow-hidden rounded-lg border">
                 <div className="aspect-square overflow-hidden">
@@ -87,6 +93,15 @@ const Home = () => {
               </article>
             ))}
           </div>
+
+
+          <Pagination
+            current={page}
+            onChange={(page) => setpage(page)}
+            pageSize={limit}
+            total={total}
+          />
+
         </div>
       </section>
     </>

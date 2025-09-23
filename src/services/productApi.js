@@ -12,6 +12,14 @@ export const productApi = createApi({
     //   query: () => `products`,
     // }),
 
+    // pagination 
+    getProduct: builder.query({
+      query: ({page=1, limit = 10}) => {
+        const skip = ( page - 1) * limit
+       return `products/?limit=${limit}&skip=${skip}`
+      },
+    }),
+
     // search 
     // getProduct: builder.query({
     //   query: (search) => `products/search${search}`,
@@ -23,9 +31,9 @@ export const productApi = createApi({
     // }),
 
     // category filter 
-    getProduct: builder.query({
-      query: (cat) => `products/category/${cat}`,
-    }),
+    // getProduct: builder.query({
+    //   query: (cat) => `products/category/${cat}`,
+    // }),
 
     getProductById: builder.query({
       query: (id) => `products/${id}`,
@@ -36,9 +44,9 @@ export const productApi = createApi({
         url: `products/add`,
         method: 'POST',
         body: formData
-      }) ,
+      }),
     }),
- 
+
   }),
 })
 // Export hooks for usage in functional components, which are
