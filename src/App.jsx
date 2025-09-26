@@ -22,7 +22,7 @@ function App() {
         <Routes>
           {/* public route  */}
           <Route path='/' element={<Home />} />
-          <Route path='/category/:id' element={<Home />} />
+          <Route path='/:id' element={<Home />} />
           <Route path='/:id' element={<SingleProduct />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/blog' element={<Blog />} />

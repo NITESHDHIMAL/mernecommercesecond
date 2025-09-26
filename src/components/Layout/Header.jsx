@@ -1,16 +1,24 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router'
 import { toast } from 'react-toastify'
+import { logout } from '../../redux/authSlice'
 
 const Header = () => {
+
+  const dispatch = useDispatch()
 
   let nav = useNavigate()
 
   const handleLogout = () => {
-    localStorage.clear();
+    // localStorage.clear();
+    dispatch(logout());
     toast.success('Logout successfully!')
     nav('/login')
   }
+
+  const user = useSelector((setCredential) => { return setCredential?.auth?.username })
+
 
   return (
     <>
@@ -34,12 +42,16 @@ const Header = () => {
               <li>
                 <Link to="/cart" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Cart</Link>
               </li>
-              <li>
-                <Link to="/login" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</Link>
-              </li>
-              <li>
-                <button onClick={handleLogout} className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent cursor-pointer">Logout</button>
-              </li>
+
+              {user ? 
+                <li>
+                  <button onClick={handleLogout} className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent cursor-pointer">Logout</button>
+                </li> 
+                :
+                <li>
+                  <Link to="/login" className="block py-2 px-3 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Login</Link>
+                </li>
+              }  
             </ul>
           </div>
         </div>

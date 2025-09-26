@@ -21,9 +21,9 @@ export const productApi = createApi({
     }),
 
     // search 
-    // getProduct: builder.query({
-    //   query: (search) => `products/search${search}`,
-    // }),
+    getProductBySearch: builder.query({
+      query: (search) => `products/search${search}`,
+    }),
 
     // sorting 
     // getProduct: builder.query({
@@ -31,9 +31,9 @@ export const productApi = createApi({
     // }),
 
     // category filter 
-    // getProduct: builder.query({
-    //   query: (cat) => `products/category/${cat}`,
-    // }),
+    getProductByCategory: builder.query({
+      query: (cat) => `products/category/${cat}`,
+    }),
 
     getProductById: builder.query({
       query: (id) => `products/${id}`,
@@ -51,4 +51,4 @@ export const productApi = createApi({
 })
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetProductQuery, useGetProductByIdQuery, usePostProductMutation } = productApi
+export const { useGetProductQuery, useGetProductBySearchQuery, useGetProductByCategoryQuery, useGetProductByIdQuery, usePostProductMutation } = productApi

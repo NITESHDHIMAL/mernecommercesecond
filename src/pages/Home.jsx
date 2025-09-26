@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Layout from '../components/Layout/Layout'
-import { useGetProductQuery } from '../services/productApi';
+import { useGetProductByCategoryQuery, useGetProductBySearchQuery, useGetProductQuery } from '../services/productApi';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
 import { useGetCategoryQuery } from '../services/categoryApi';
@@ -20,13 +20,28 @@ const Home = () => {
 
   console.log("search params", search)
 
-  const { data: product } = useGetProductQuery({page, limit});
-  // const { data: product } = useGetProductQuery(search);
-  // const { data: product } = useGetProductQuery(id);
-  const total = product?.total || 0;
-
   const { data: category } = useGetCategoryQuery()
 
+  const { data: product } = useGetProductQuery({ page, limit });
+  const { data: searchproduct } = useGetProductBySearchQuery(search);
+  const { data: categoryproduct } = useGetProductByCategoryQuery(id);
+
+
+  // const productDisplay = id ? categoryproduct : product;
+
+  let productDisplay;
+
+  if (search && searchproduct) {
+    productDisplay = searchproduct;
+  } else if (id && categoryproduct) {
+    productDisplay = categoryproduct;
+  } else {
+    productDisplay = product
+  }
+
+  const total = productDisplay?.total || 0;
+
+  console.log("all data", productDisplay)
 
   return (
     <>
@@ -62,7 +77,7 @@ const Home = () => {
           </select>
 
 
-          <select name="" id="" onChange={(e) => nav('/category/' + e.target.value)}>
+          <select name="" id="" onChange={(e) => nav('/' + e.target.value)}>
             <option value>Select Category</option>
             {category?.map((data) => (
               <option value={data?.slug}>{data?.name}</option>
@@ -71,7 +86,8 @@ const Home = () => {
 
 
           <div className="mt-10 mb-12 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
-            {product?.products?.map((products, i) => (
+            {/* {product?.products?.map((products, i) => ( */}
+            {productDisplay?.products?.map((products, i) => (
               <article key={i} className="relative flex flex-col overflow-hidden rounded-lg border">
                 <div className="aspect-square overflow-hidden">
                   <Link to={`/${products?.id}`}><img className="h-full w-full object-cover transition-all duration-300 group-hover:scale-125" src={products?.thumbnail} alt="" /></Link>
